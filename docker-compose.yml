@@ -1,0 +1,39 @@
+version: '3'
+services:
+  web:
+    build:
+    # The following two lines under build specify where and what file to use to build the docker image
+    # context: -> where do you want all the files and folder for the image to be pull from
+      context: .
+      # name of the docker file that is going to be use to build the image
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes: 
+    # do not map a folder up against /home/node/app/node_modules inside the container
+    # (.) => means current directory
+      - /home/node/app/node_modules
+      # the meaning of the line below is:
+      # we wanat to map the current directory (.) to inside our container (/home/node/app)
+      # Remember that (:) meean map and (-) mean a list in yml files
+      - .:/home/node/app
+
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes: 
+    # do not map a folder up against /home/node/app/node_modules inside the container
+    # (.) => means current directory
+      - /home/node/app/node_modules
+      # the meaning of the line below is:
+      # we wanat to map the current directory (.) to inside our container (/home/node/app)
+      # Remember that (:) meean map and (-) mean a list in yml files
+      - .:/home/node/app
+
+      # Override the starting commands find on the Dockerfile.dev CMD
+    command: ["npm", "run", "test"]
+    
+      
+
+      
